@@ -7,18 +7,32 @@ steps:
     - |
       echo "Pipeline triggered successfully!"
 
-      FILE=$$(git show --name-only --pretty="" $COMMIT_SHA | head -1)
+      FILES=$$(git show --name-only --pretty="" $COMMIT_SHA)
 
-      echo "Changed file: $$FILE"
+      echo "Changed files:"
+      echo "$$FILES"
 
-      if [ -z "$$FILE" ]; then
-        echo "No file detected"
-        exit 0
-      fi
+      for FILE in $$FILES; do
 
-      SIZE=$$(stat -c%s "$$FILE")
+        if [ ! -f "$$FILE" ]; then
+          continue
+        fi
 
-      echo "File size is $$SIZE"
+        SIZE=$$(stat -c%s "$$FILE")
+
+        echo "----------------------"
+        echo "File: $$FILE"
+        echo "Size: $$SIZE bytes"
+
+        if [ $$SIZE -lt 1000 ]; then
+          echo "Action: SMALL file detected"
+        elif [ $$SIZE -lt 1000000 ]; then
+          echo "Action: MEDIUM file detected"
+        else
+          echo "Action: LARGE file detected (future Dataproc trigger)"
+        fi
+
+      done
 
 options:
   logging: CLOUD_LOGGING_ONLY
