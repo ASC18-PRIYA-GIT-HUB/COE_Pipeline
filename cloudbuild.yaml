@@ -1,6 +1,6 @@
 steps:
 
-- name: 'ubuntu'
+- name: 'gcr.io/cloud-builders/git'
   entrypoint: 'bash'
   args:
     - '-c'
