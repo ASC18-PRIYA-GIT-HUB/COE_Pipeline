@@ -14,3 +14,6 @@ steps:
       SIZE=$(stat -c%s "$FILE")
 
       echo "File size is $SIZE"
+
+options:
+  logging: CLOUD_LOGGING_ONLY
