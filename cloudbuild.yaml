@@ -7,13 +7,13 @@ steps:
     - |
       echo "Pipeline triggered successfully!"
 
-      FILE=$(git diff --name-only HEAD~1 HEAD | head -1)
+      FILE=$$(git diff --name-only HEAD~1 HEAD | head -1)
 
-      echo "Changed file: $FILE"
+      echo "Changed file: $$FILE"
 
-      SIZE=$(stat -c%s "$FILE")
+      SIZE=$(stat -c%s "$$FILE")
 
-      echo "File size is $SIZE"
+      echo "File size is $$SIZE"
 
 options:
   logging: CLOUD_LOGGING_ONLY
