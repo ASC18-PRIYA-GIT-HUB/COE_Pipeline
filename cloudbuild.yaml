@@ -7,11 +7,16 @@ steps:
     - |
       echo "Pipeline triggered successfully!"
 
-      FILE=$$(git diff --name-only HEAD~1 HEAD | head -1)
+      FILE=$$(git show --name-only --pretty="" $COMMIT_SHA | head -1)
 
       echo "Changed file: $$FILE"
 
-      SIZE=$(stat -c%s "$$FILE")
+      if [ -z "$$FILE" ]; then
+        echo "No file detected"
+        exit 0
+      fi
+
+      SIZE=$$(stat -c%s "$$FILE")
 
       echo "File size is $$SIZE"
 
